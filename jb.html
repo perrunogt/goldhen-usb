@@ -1,449 +1,444 @@
 <!DOCTYPE html>
-<html lang="es" manifest="cache.appcache">
+<html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>HOST:PERRUNOGT</title>
-
+  <title>GOLDHEN USB · PERRUNOGT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #020504;
-      --panel: #040e09;
-      --green: #00ff88;
-      --green3: #65ffb3;
-      --text: #eafff3;
-      --muted: #537565;
-      --red: #ff365e;
+      --bg:     #04080f;
+      --panel:  #070d18;
+      --cyan:   #00e5ff;
+      --cyan2:  #80f0ff;
+      --yellow: #ffe033;
+      --yellow2:#fff0a0;
+      --dim:    #1a3040;
+      --muted:  #3a5a6a;
+      --text:   #cce8f0;
+      --white:  #ffffff;
+      --red:    #ff4466;
+      --mono:   'Share Tech Mono', monospace;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-    }
-
-    body {
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    html, body {
+      width: 100%; height: 100%;
       background: var(--bg);
       color: var(--text);
-      font-family: monospace, sans-serif;
+      font-family: var(--mono);
+      overflow: hidden;
     }
 
-    body::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(
-          rgba(0, 255, 136, 0.018) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(0, 255, 136, 0.018) 1px,
-          transparent 1px
-        );
-      background-size: 40px 40px;
+    /* fondo con líneas de scan muy sutiles */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,229,255,0.012) 3px,
+        rgba(0,229,255,0.012) 4px
+      );
       pointer-events: none;
+      z-index: 0;
     }
 
-    #main-container {
-      position: relative;
-      width: min(88vw, 440px);
-      height: min(88vw, 440px);
-      min-width: 290px;
-      min-height: 290px;
+    /* ── HEADER ── */
+    #hdr {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--dim);
+      background: rgba(4,8,15,0.92);
+      backdrop-filter: blur(6px);
+      z-index: 10;
+    }
+    #hdr-left { font-size: 10px; letter-spacing: .18em; color: var(--muted); }
+    #hdr-left span { color: var(--cyan); }
+    #hdr-right {
+      font-size: 9px; letter-spacing: .22em;
+      color: var(--muted);
+    }
+    #hdr-right span { color: var(--cyan2); }
+
+    /* ── CENTRO ── */
+    #center {
+      position: fixed;
+      inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: var(--panel);
-      border: 1px solid rgba(0, 255, 136, 0.22);
-      border-radius: 30px;
-      box-shadow:
-        0 10px 35px rgba(0, 0, 0, 0.72),
-        0 0 18px rgba(0, 255, 136, 0.07);
+      gap: 0;
+      z-index: 1;
     }
 
-    #main-container::before,
-    #main-container::after {
-      content: "";
+    /* logo / marca */
+    #logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 42px;
+    }
+
+    #logo-icon {
+      position: relative;
+      width: 64px; height: 64px;
+    }
+    /* cuadrado girado */
+    #logo-icon::before {
+      content: '';
       position: absolute;
-      width: 42px;
-      height: 42px;
-      border-color: var(--green);
-      opacity: 0.7;
+      inset: 10px;
+      background: transparent;
+      border: 2px solid var(--cyan);
+      transform: rotate(45deg);
+      box-shadow: 0 0 12px rgba(0,229,255,.4), inset 0 0 8px rgba(0,229,255,.08);
     }
-
-    #main-container::before {
-      top: -1px;
-      left: -1px;
-      border-top: 2px solid;
-      border-left: 2px solid;
-      border-radius: 30px 0 0 0;
-    }
-
-    #main-container::after {
-      right: -1px;
-      bottom: -1px;
-      border-right: 2px solid;
-      border-bottom: 2px solid;
-      border-radius: 0 0 30px 0;
-    }
-
-    #brand {
+    /* punto central */
+    #logo-icon::after {
+      content: '';
       position: absolute;
-      top: 38px;
-      font-family: monospace, sans-serif;
-      font-size: clamp(17px, 5vw, 23px);
-      font-weight: 800;
-      letter-spacing: 0.13em;
-      color: #fff;
-      text-shadow: 0 0 8px rgba(0, 255, 136, 0.55);
+      top: 50%; left: 50%;
+      width: 8px; height: 8px;
+      background: var(--cyan);
+      border-radius: 2px;
+      transform: translate(-50%,-50%) rotate(45deg);
+      box-shadow: 0 0 8px var(--cyan);
     }
 
-    #brand::before {
-      content: "GOLDHEN HOST";
-      display: block;
-      margin-bottom: 6px;
-      text-align: center;
-      font-size: 8px;
-      font-weight: 400;
-      letter-spacing: 0.35em;
+    #brand-name {
+      font-size: clamp(22px, 6vw, 30px);
+      letter-spacing: .12em;
+      color: var(--white);
+      text-shadow: 0 0 20px rgba(0,229,255,.35);
+    }
+    #brand-sub {
+      font-size: 9px;
+      letter-spacing: .32em;
+      color: var(--muted);
+      margin-top: -6px;
+    }
+
+    /* ── BARRA DE ESTADO ── */
+    #status-block {
+      width: min(88vw, 380px);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    #status-line {
+      font-size: 11px;
+      letter-spacing: .08em;
+      color: var(--muted);
+      min-height: 16px;
+      transition: color .3s;
+    }
+    #status-line.active { color: var(--cyan); }
+    #status-line.ok     { color: var(--cyan2); }
+    #status-line.bad    { color: var(--red); }
+
+    /* barra de progreso */
+    #bar-track {
+      width: 100%;
+      height: 2px;
+      background: var(--dim);
+      position: relative;
+      overflow: hidden;
+    }
+    #bar-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+      transition: width .4s ease;
+    }
+    /* brillo que corre */
+    #bar-track::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -40%;
+      width: 40%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
+      animation: shimmer 2s linear infinite;
+    }
+    body.done #bar-track::after,
+    body.fail #bar-track::after { display: none; }
+
+    @keyframes shimmer {
+      0%   { left: -40%; }
+      100% { left: 140%; }
+    }
+
+    /* fw / info row */
+    #info-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      letter-spacing: .1em;
       color: var(--muted);
     }
+    #info-row span { color: var(--dim); }
+    #info-row span.lit { color: var(--cyan2); }
 
-    #visual-indicator {
-      position: relative;
-      width: 190px;
-      height: 150px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 38px;
-    }
-
-    .core {
-      position: relative;
-      width: 58px;
-      height: 58px;
-      border-radius: 14px;
-      transform: rotate(45deg);
-      background: var(--green);
-      box-shadow: 0 0 14px var(--green);
-      z-index: 5;
-    }
-
-    .core::before {
-      content: "";
-      position: absolute;
-      width: 22px;
-      height: 22px;
-      top: 18px;
-      left: 18px;
-      background: #fff;
-      border-radius: 5px;
-    }
-
-    #visual-indicator::before,
-    #visual-indicator::after {
-      content: "";
-      position: absolute;
-      width: 110px;
-      height: 110px;
-      border: 1px solid rgba(0, 255, 136, 0.18);
-      transform: rotate(45deg);
-    }
-
-    #visual-indicator::after {
-      width: 150px;
-      height: 150px;
-      border-color: rgba(0, 255, 136, 0.07);
-    }
-
-    #spin {
-      position: absolute;
-      width: 180px;
-      height: 70px;
-      z-index: 2;
-    }
-
-    #spin::before,
-    #spin::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      width: 140px;
-      height: 2px;
-      transform: translateX(-50%);
-      background:
-        linear-gradient(
-          90deg,
-          transparent,
-          var(--green),
-          transparent
-        );
-    }
-
-    #spin::before {
-      top: 8px;
-    }
-
-    #spin::after {
-      bottom: 8px;
-    }
-
-    .pulse {
-      position: absolute;
-      width: 130px;
-      height: 130px;
-      border-radius: 18px;
-      border: 1px dashed rgba(0, 255, 136, 0.16);
-      transform: rotate(45deg);
-    }
-
-    body.done #main-container {
-      border-color: rgba(0, 255, 136, 0.55);
-      box-shadow: 0 0 28px rgba(0, 255, 136, 0.18);
-    }
-
-    body.done #brand {
-      color: var(--green3);
-    }
-
-    body.done #spin {
-      display: none;
-    }
-
-    body.done .pulse {
-      border-color: rgba(0, 255, 136, 0.55);
-    }
-
-    body.done .core {
-      background: var(--green);
-      box-shadow: 0 0 20px var(--green);
-    }
-
-    body.fail #main-container {
-      border-color: rgba(255, 54, 94, 0.45);
-      box-shadow: 0 0 28px rgba(255, 54, 94, 0.16);
-    }
-
-    body.fail #brand {
-      color: var(--red);
-    }
-
-    body.fail #spin {
-      display: none;
-    }
-
-    body.fail .pulse {
-      border-color: var(--red);
-    }
-
-    body.fail .core {
-      background: var(--red);
-      box-shadow: 0 0 16px var(--red);
-    }
-
+    /* mensaje final */
     #msg {
-      position: fixed;
-      left: 50%;
-      bottom: 78px;
-      transform: translateX(-50%);
-      display: none;
-      width: 90%;
-      text-align: center;
-      font-family: monospace, sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.18em;
+      font-size: 10px;
+      letter-spacing: .18em;
       color: var(--red);
-    }
-
-    body.fail #msg {
-      display: block;
-    }
-
-    #footer {
-      position: fixed;
-      bottom: 25px;
-      font-family: monospace, sans-serif;
-      font-size: 9px;
-      letter-spacing: 0.22em;
-      color: rgba(140, 210, 170, 0.4);
-    }
-
-    #footer::before {
-      content: "◆ ";
-      color: var(--green);
-    }
-
-    #exploit-title {
-      position: fixed;
-      top: 22px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      padding: 10px 22px;
-      color: var(--green);
-      border: 1px solid rgba(0, 255, 136, 0.45);
-      border-radius: 10px;
-      background: rgba(2, 12, 7, 0.96);
-      font-family: monospace, sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.10em;
       text-align: center;
+      min-height: 14px;
+    }
+    body.done #msg { color: var(--cyan); }
+
+    /* estados globales — DONE: todo amarillo */
+    body.done { background: #0a0900; }
+    body.done #bar-fill { width: 100% !important; background: var(--yellow); box-shadow: 0 0 14px var(--yellow); }
+    body.done #bar-track::after { display: none; }
+    body.done #logo-icon::before { border-color: var(--yellow); box-shadow: 0 0 20px rgba(255,224,51,.5); }
+    body.done #logo-icon::after  { background: var(--yellow); box-shadow: 0 0 14px var(--yellow); }
+    body.done #brand-name { color: var(--yellow); text-shadow: 0 0 24px rgba(255,224,51,.6); }
+    body.done #brand-sub  { color: var(--yellow2); opacity: .7; }
+    body.done #hdr  { border-color: rgba(255,224,51,.2); }
+    body.done #ftr  { border-color: rgba(255,224,51,.2); }
+    body.done #hdr-left span { color: var(--yellow); }
+    body.done #fw-badge   { color: var(--yellow2); }
+    body.done body::after { background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,224,51,.012) 3px, rgba(255,224,51,.012) 4px); }
+    body.done #status-line { color: var(--yellow); }
+    body.done #msg { color: var(--yellow2); }
+    body.done #pct-label { color: var(--yellow); }
+
+    body.fail #bar-fill  { background: var(--red); box-shadow: 0 0 8px var(--red); }
+    body.fail #logo-icon::before { border-color: var(--red); box-shadow: 0 0 12px rgba(255,68,102,.4); }
+    body.fail #logo-icon::after  { background: var(--red); box-shadow: 0 0 8px var(--red); }
+    body.fail #brand-name { color: var(--red); text-shadow: none; }
+
+    /* cartelito toast de éxito */
+    #toast {
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: rgba(10, 8, 0, 0.95);
+      border: 1px solid var(--yellow);
+      border-radius: 10px;
+      padding: 14px 28px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .14em;
+      color: var(--yellow);
+      text-align: center;
+      box-shadow: 0 0 24px rgba(255,224,51,.25), 0 4px 20px rgba(0,0,0,.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .4s ease, transform .4s ease;
+      z-index: 100;
       white-space: nowrap;
     }
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    #toast::before {
+      content: '✓ ';
+      color: var(--yellow);
+    }
 
-    #credits {
+    /* ── FOOTER ── */
+    #ftr {
       position: fixed;
-      left: 50%;
-      bottom: 48px;
-      transform: translateX(-50%);
+      bottom: 0; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      border-top: 1px solid var(--dim);
+      background: rgba(4,8,15,0.92);
+      backdrop-filter: blur(6px);
       z-index: 10;
-      width: min(92vw, 700px);
-      color: var(--green);
-      font-family: monospace, sans-serif;
-      font-size: 10px;
-      line-height: 1.5;
-      letter-spacing: 0.05em;
-      text-align: center;
+      font-size: 9px;
+      letter-spacing: .18em;
+      color: var(--muted);
     }
+    #ftr-credits { color: var(--dim); font-size: 8px; letter-spacing: .12em; text-align: right; }
+    #ftr-credits span { color: var(--muted); }
 
-    #wrap {
-      padding: 0;
-    }
-
-    #state,
-    #out {
-      display: none;
-    }
-
+    /* ── LOG MODE ── */
     body.log {
       display: block;
       overflow: auto;
       padding: 20px;
-      background: var(--bg);
     }
-
-    body.log::before,
     body.log::after,
-    body.log #main-container,
-    body.log #footer,
-    body.log #exploit-title,
-    body.log #credits {
-      display: none;
-    }
+    body.log #hdr,
+    body.log #center,
+    body.log #ftr { display: none; }
 
-    body.log #wrap {
-      display: block;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
+    body.log #wrap { display: block; max-width: 900px; margin: 0 auto; }
     body.log #state {
       display: block;
       margin-bottom: 12px;
-      font-family: monospace, sans-serif;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--text);
     }
-
     body.log #out {
       display: block;
-      max-height: calc(100vh - 100px);
+      max-height: calc(100vh - 80px);
       overflow-y: auto;
       padding: 16px;
       white-space: pre-wrap;
-      font: 12px/1.6 monospace, sans-serif;
+      font: 11px/1.7 var(--mono);
       color: var(--text);
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(0, 255, 136, 0.12);
-      border-radius: 12px;
+      background: rgba(255,255,255,.02);
+      border: 1px solid var(--dim);
+      border-radius: 8px;
     }
+    .ok, .safe { color: var(--cyan); }
+    .bad, .danger { color: var(--red); }
+    .warn { color: #e3b341; }
 
-    .ok,
-    .safe {
-      color: var(--green);
-    }
+    #wrap { padding: 0; }
+    #state, #out { display: none; }
 
-    .bad,
-    .danger {
-      color: var(--red);
-    }
-
-    .warn {
-      color: #e3b341;
-    }
-
-    code {
-      color: #72c99c;
-      font-family: monospace, sans-serif;
-    }
-
-    @media (max-width: 600px) {
-      #exploit-title {
-        top: 12px;
-        padding: 8px 12px;
-        font-size: 8px;
-      }
-
-      #credits {
-        bottom: 42px;
-        font-size: 8px;
-        padding: 0 12px;
-      }
-
-      #main-container {
-        width: 88vw;
-        height: 88vw;
-      }
+    @media (max-width: 480px) {
+      #hdr { padding: 10px 16px; }
+      #ftr { padding: 10px 16px; flex-direction: column; gap: 4px; text-align: center; }
+      #ftr-credits { text-align: center; }
     }
   </style>
 </head>
 <body>
 
-  <div id="exploit-title">
-    CARGA DE EXPLOIT GOLDHEN 11.00 A 13.52
-  </div>
+  <!-- header -->
+  <header id="hdr">
+    <div id="hdr-left">SYS / <span>GOLDHEN USB</span></div>
+    <div id="hdr-right">FW <span id="fw-badge">--</span></div>
+  </header>
 
-  <div id="main-container">
-    <div id="brand">HOST:PERRUNOGT</div>
+  <!-- contenido central -->
+  <main id="center">
 
-    <div id="visual-indicator">
-      <div id="spin"></div>
-      <div class="pulse"></div>
-      <div class="core"></div>
+    <div id="logo-wrap">
+      <div id="logo-icon"></div>
+      <div id="brand-name">PERRUNOGT</div>
+      <div id="brand-sub">CARGA POR USB · PS4 11.00 – 13.52</div>
     </div>
-  </div>
 
-  <div id="msg">Restart your console</div>
+    <div id="status-block">
+      <div id="status-line">Exploit carga GoldHEN por USB...</div>
+      <div id="bar-track"><div id="bar-fill"></div></div>
+      <div id="info-row">
+        <div>RAW GAME <span class="lit">&amp;</span> SISTRO</div>
+        <div><span id="pct-label">0%</span></div>
+      </div>
+      <div id="msg"></div>
+    </div>
 
-  <div id="credits">
-    Agradecimientos a Raw game y sistro por la distribución del exploit y carga de GoldHEN
-  </div>
+  </main>
 
+  <!-- toast de éxito -->
+  <div id="toast">GoldHEN cargado correctamente</div>
+
+  <!-- footer -->
+  <footer id="ftr">
+    <div>PERRUNOGT // GH-HOST</div>
+    <div id="ftr-credits">Raw game y <span>Sistro</span> — distribución del exploit</div>
+  </footer>
+
+  <!-- log mode (oculto en modo normal) -->
   <div id="wrap">
     <div id="state"></div>
     <div id="out"></div>
   </div>
 
-  <div id="footer">
-    PERRUNOGT // GOLDHEN HOST
-  </div>
+  <script>
+    // Conecta el UI con los eventos del jb.js
+    // jb.js llama a finishUI(ok) y usa document.getElementById("state") / "out"
+    // Aquí interceptamos body.className para actualizar la barra y el texto
+
+    const statusEl  = document.getElementById('status-line');
+    const barFill   = document.getElementById('bar-fill');
+    const msgEl     = document.getElementById('msg');
+    const pctLabel  = document.getElementById('pct-label');
+    const fwBadge   = document.getElementById('fw-badge');
+    const toastEl   = document.getElementById('toast');
+
+    // Progreso simulado mientras el exploit corre
+    let pct = 0;
+    let simTimer = null;
+
+    function setPct(v) {
+      pct = Math.min(v, 98);
+      barFill.style.width = pct + '%';
+      pctLabel.textContent = Math.round(pct) + '%';
+    }
+
+    function startSim() {
+      simTimer = setInterval(() => {
+        if (pct < 60) setPct(pct + 1.2);
+        else if (pct < 85) setPct(pct + 0.4);
+        else if (pct < 95) setPct(pct + 0.1);
+      }, 300);
+    }
+
+    function stopSim() { clearInterval(simTimer); }
+
+    // Observar cambios en body.className para reaccionar a done/fail
+    const bodyObs = new MutationObserver(() => {
+      const cls = document.body.className;
+      if (cls === 'done') {
+        stopSim();
+        setPct(100);
+        statusEl.className = 'ok';
+        statusEl.textContent = 'GoldHEN cargado correctamente';
+        msgEl.textContent = 'DONE';
+        // mostrar cartelito con pequeño delay para que se vea la transición
+        setTimeout(() => toastEl.classList.add('show'), 300);
+      } else if (cls === 'fail') {
+        stopSim();
+        statusEl.className = 'bad';
+        statusEl.textContent = 'Error en el exploit';
+        msgEl.textContent = document.body.className === 'fail'
+          ? 'Reinicia la consola e intenta de nuevo'
+          : '';
+      }
+    });
+    bodyObs.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    // Leer firmware del UA para el badge
+    const ua = navigator.userAgent;
+    const fwM = ua.match(/PlayStation 4\/(\d+\.\d+)/);
+    if (fwM) fwBadge.textContent = fwM[1];
+
+    // Actualizar texto de estado según el log del exploit
+    const outEl = document.getElementById('out');
+    const outObs = new MutationObserver(() => {
+      const txt = outEl.innerText || '';
+      const lines = txt.trim().split('\n');
+      const last = lines[lines.length - 1] || '';
+      if (last) {
+        statusEl.className = 'active';
+        // extraer solo la parte útil (antes del doble espacio)
+        const clean = last.split('  ')[0].replace(/^[A-Z\-]+\s*/, '').trim();
+        if (clean) statusEl.textContent = clean || last;
+      }
+    });
+    outObs.observe(outEl, { childList: true, subtree: true, characterData: true });
+
+    // Arrancar simulación de progreso
+    startSim();
+    statusEl.className = 'active';
+  </script>
 
   <script type="module">
     import "./jb.js?v=10";
