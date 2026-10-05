@@ -158,25 +158,8 @@
     #bar-fill {
       height: 100%;
       width: 0%;
-      background: var(--cyan);
-      box-shadow: 0 0 8px var(--cyan);
-      transition: width .4s ease;
-    }
-    /* brillo que corre */
-    #bar-track::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -40%;
-      width: 40%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
-      animation: shimmer 2s linear infinite;
-    }
-    body.done #bar-track::after,
-    body.fail #bar-track::after { display: none; }
-
-    @keyframes shimmer {
-      0%   { left: -40%; }
-      100% { left: 140%; }
+      background: linear-gradient(90deg, var(--cyan), var(--cyan2));
+      box-shadow: 0 0 6px rgba(0,229,255,.3);
     }
 
     /* fw / info row */
@@ -202,7 +185,7 @@
 
     /* estados globales — DONE: todo amarillo */
     body.done { background: #0a0900; }
-    body.done #bar-fill { width: 100% !important; background: var(--yellow); box-shadow: 0 0 14px var(--yellow); }
+    body.done #bar-fill { width: 100% !important; background: linear-gradient(90deg, var(--yellow), var(--yellow2)); box-shadow: 0 0 6px rgba(255,224,51,.3); }
     body.done #bar-track::after { display: none; }
     body.done #logo-icon::before { border-color: var(--yellow); box-shadow: 0 0 20px rgba(255,224,51,.5); }
     body.done #logo-icon::after  { background: var(--yellow); box-shadow: 0 0 14px var(--yellow); }
@@ -240,7 +223,6 @@
       box-shadow: 0 0 24px rgba(255,224,51,.25), 0 4px 20px rgba(0,0,0,.6);
       opacity: 0;
       pointer-events: none;
-      transition: opacity .4s ease, transform .4s ease;
       z-index: 100;
       white-space: nowrap;
     }
@@ -402,8 +384,7 @@
         statusEl.className = 'ok';
         statusEl.textContent = 'GoldHEN cargado correctamente';
         msgEl.textContent = 'DONE';
-        // mostrar cartelito con pequeño delay para que se vea la transición
-        setTimeout(() => toastEl.classList.add('show'), 300);
+        toastEl.classList.add('show');
       } else if (cls === 'fail') {
         stopSim();
         statusEl.className = 'bad';
